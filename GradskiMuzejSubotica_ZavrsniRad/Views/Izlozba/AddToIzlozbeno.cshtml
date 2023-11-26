@@ -1,0 +1,48 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.IzlozbenoBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Unos Izložbe";
+    Layout = "_StrucnjakLayout";
+    //List<PredmetBO> predmeti = ViewBag.Predmeti;
+    var idIzlozba = TempData["SifIzl"];
+    ZbirkaRepository zbirkaRepository = new ZbirkaRepository();
+    OdeljenjeRepository odeljenjeRepository = new OdeljenjeRepository();
+}
+
+<h1>AddToIzlozbeno</h1>
+
+<h4>IzlozbenoBO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddToIzlozbeno">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IzlozbaID" class="control-label"></label>
+                <input asp-for="IzlozbaID" class="form-control" value="@idIzlozba" readonly />
+                <span asp-validation-for="IzlozbaID" class="text-danger"></span>
+            </div>
+            @foreach (PredmetBO p in ViewBag.Predmeti)
+            {
+                ZbirkaBO z = zbirkaRepository.GetZbirkaById(p.ZbirkaId);
+                OdeljenjeBO o = odeljenjeRepository.GetOdeljenjeById(z.OdeljenjeId);
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="predmeti[]" value="@p.Id" />
+                    <label class="form-check-label">
+                        @p.Id - @o.Name Odeljenje - @z.Name - @p.Name
+                    </label>
+                </div>
+            }
+            
+            <div class="form-group">
+                <input type="submit" value="Unesi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

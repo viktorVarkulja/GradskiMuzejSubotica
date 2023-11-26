@@ -1,0 +1,192 @@
+﻿@model IEnumerable<GradskiMuzejSubotica_ZavrsniRad.Models.PredmetBO>
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "ListPredmet";
+    Layout = "_StrucnjakLayout";
+    IEnumerable<PredmetBO> predmeti = ViewBag.Predmeti;
+    var korisnikId = ViewData["KorisnikId"];
+    TempData["KorisnikId"] = korisnikId;
+    ZahtevRestauracijaRepository zahtevRestauracijaRepository = new();
+}
+
+<h1>Predmeti</h1>
+
+<p>
+    <a asp-action="SetPredmetId">Unesite novi predmet</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZbirkaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mesto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vreme)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tehnika)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Materijal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dimenzije)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrDelova)
+            </th>
+            <th>
+                Status zahteva
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZbirkaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Autor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mesto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vreme)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tehnika)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Materijal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dimenzije)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrDelova)
+            </td>
+            
+                @{
+                    ZahtevRestauracijaBO? zahtev = zahtevRestauracijaRepository.GetZahtevByPredmet(item.Id);
+
+                }
+                @if (zahtev != null)
+                {
+                    string opisStatus = zahtevRestauracijaRepository.GetZahtevStatusName(zahtev.StatusId);
+                    switch (zahtev.StatusId)
+                    {
+                        case 1:
+                            <td>
+                                <div class="badge bg-secondary text-wrap">
+                                    @Html.DisplayFor(modelItem => opisStatus)
+                                </div>
+                            </td>
+                            break;
+                        case 2:
+                            <td>
+                                <div class="badge bg-danger text-wrap">
+                                    @Html.DisplayFor(modelItem => opisStatus)
+                                </div>
+                            </td>
+                            break;
+                            case 3:
+                            <td>
+                                <div class="badge bg-info text-wrap">
+                                    @Html.DisplayFor(modelItem => opisStatus)
+                                </div>
+                            </td>
+                            break;
+                        case 4:
+                            <td>
+                                <div class="badge bg-success text-wrap">
+                                    @Html.DisplayFor(modelItem => opisStatus)
+                                </div>
+                            </td>
+                            break;
+                        default:
+                            <td>
+								<div class="badge bg-black text-wrap">
+                                    @Html.DisplayFor(modelItem => opisStatus)
+                                </div>
+                            </td>
+                            break;
+                    }
+                }
+                else
+                {
+                    <td>
+
+                    </td>
+                }
+                
+                <td>
+                    @Html.ActionLink("Izmeni podatke", "EditPredmet", new { id=item.Id }) |
+                @Html.ActionLink("Prikaži podatke", "DetailsPredmet", new {  id=item.Id }) |
+                    @Html.ActionLink("Briši predmet", "DeletePredmet", new { id=item.Id }) 
+                    @{
+                        string line = " | ";
+                        if (zahtev != null)
+                        {
+                            if (zahtev.StatusId == 2 || zahtev.StatusId == 4)
+                            {
+                                @line
+                                @Html.ActionLink("Zahtev za restauraciju", "ZahtevRestauracija", new { id = item.Id, korisnik = korisnikId })
+                            }
+                        }
+                        else
+                        {
+                            @line
+                            @Html.ActionLink("Zahtev za restauraciju", "ZahtevRestauracija", new { id = item.Id, korisnik = korisnikId })
+                        }
+                    }
+                        
+            </td>
+        </tr>
+            @if (zahtev != null && zahtev.Comment != null)
+            {
+
+                <tr>
+                    <th>
+                        Komentar od restauratora
+                    </th>
+                    <td colspan="12">
+                        @zahtev.Comment
+                    </td>
+                </tr>
+            }
+        
+        }
+        <div>
+            <a asp-controller="Predmet" asp-action="SearchForListPredmet">Vratite se na pretragu</a>
+        </div>
+    </tbody>
+</table>

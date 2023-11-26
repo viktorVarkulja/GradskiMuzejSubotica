@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+@{
+	RacunRepository racunRepository = new();
+	TempData["Success"] = "Uspešno ste uneli račun!";
+	var uslugaId = ViewData["Usluga"];
+	var amount = ViewData["Amount"];
+	var date = ViewData["Date"];
+	var time = ViewData["Time"];
+	var vrednost = ViewData["Vrednost"];
+	Layout = "_RadnikLayout";
+	ViewData["Title"] = "Unos Računa";
+}
+@{
+	UslugaBO usluga = racunRepository.GetUslugaById((int)uslugaId);
+	<div class="row">
+		<div class="col-md-4">
+	
+			====== OVO NIJE FISKALNI RACUN =====<br>
+			==================================<br>
+			Gradski Muzej Subotica<br>
+			Trg Sinagoge<br>
+			Subotica 24000<br>
+			==================================<br>
+			Naziv&nbsp;&nbsp;  Cena&nbsp;&nbsp;&nbsp;&nbsp; Kol.&nbsp;&nbsp;&nbsp;&nbsp;	Ukupno<br>
+			@usluga.Name<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@usluga.Price&nbsp;&nbsp;&nbsp;&nbsp; @amount&nbsp;&nbsp;&nbsp; @vrednost<br>
+			==================================<br>
+			Datum i vreme:<br>
+			@date @time<br>
+			====== OVO NIJE FISKALNI RACUN =====<br>
+		</div>
+	</div>
+	}
+
+ <br>
+ <br />
+ <br />
+ <a asp-action="Radnik" asp-controller="Home">Vratite se na početnu</a>

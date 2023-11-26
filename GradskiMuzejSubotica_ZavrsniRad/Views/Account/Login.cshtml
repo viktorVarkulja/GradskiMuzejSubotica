@@ -1,0 +1,64 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    string userError = (String)ViewData["UserError"];
+    string passwordError = (String)ViewData["PasswordError"];
+    var sessionError = ViewData["SessionExpire"];
+    Layout = "_LoginLayout";
+}
+
+<div class="row">
+    <div class="d-flex justify-content-center">
+        <h1>
+            GRADSKI MUZEJ SUBOTICA
+        </h1>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h2>Prijava korisnika</h2>
+        <hr />
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                @{
+                    if (userError != null)
+                    {
+                        <span asp-validation-for="UserName" class="text-danger">@userError</span>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                @{
+                    if (passwordError != null)
+                    {
+                        <span asp-validation-for="Password" class="text-danger">@passwordError</span>
+                    }
+                }
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Logujte se" class="btn btn-primary" />
+            </div>
+        </form>
+        <br />
+        @{
+            if (sessionError != null)
+            {
+                <span class="text-danger">@sessionError</span>
+            }
+        }
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

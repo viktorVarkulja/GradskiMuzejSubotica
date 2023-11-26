@@ -1,0 +1,207 @@
+﻿@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository;
+@model GradskiMuzejSubotica_ZavrsniRad.Models.IzlozbaBO
+
+@{
+    ViewData["Title"] = "Izmena Podataka Izložbe";
+    Layout = "~/Views/Shared/_StrucnjakLayout.cshtml";
+    var errorPredmet = ViewData["ErrorPredmet"];
+    ZbirkaRepository zbirkaRepository = new ZbirkaRepository();
+    PredmetRepository predmetRepository = new PredmetRepository();
+}
+
+<h1>Izmena podataka izložbe</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditIzlozba">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label"></label>
+                <input asp-for="ID" class="form-control" />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrSale" class="control-label"></label>
+                <input asp-for="BrSale" class="form-control" />
+                <span asp-validation-for="BrSale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Snimi" class="btn btn-primary" />
+            </div>
+            <label class="control-label">Predmeti</label>
+            @if (errorPredmet != null)
+            {
+                <br />
+                <span class="text-danger">@errorPredmet</span>
+            }
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Inventarski broj
+                        </th>
+                        <th>
+                            Šifra zbirke
+                        </th>
+                        <th>
+                            Naziv
+                        </th>
+                        <th>
+                            Autor
+                        </th>
+                        <th>
+                            Mesto
+                        </th>
+                        <th>
+                            Vreme
+                        </th>
+                        <th>
+                            Stil
+                        </th>
+                        <th>
+                            Tehnika
+                        </th>
+                        <th>
+                            Materijal
+                        </th>
+                        <th>
+                            Dimenzije
+                        </th>
+                        <th>
+                            Broj delova
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (IzlozbenoBO i in ViewBag.Izlozbeni)
+                    {
+                        PredmetBO item = predmetRepository.GetPredmetById(i.PredmetID);
+                        <tr>
+                            <td>
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input" type="checkbox"
+                                           name="predmeti[]" id="@item.Id" value="@item.Id" checked/>
+
+                                </div>
+                            </td>
+
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @zbirkaRepository.GetZbirkaById(item.ZbirkaId).Name;
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Autor
+                            </td>
+                            <td>
+                                @item.Mesto
+                            </td>
+                            <td>
+                                @item.Vreme
+                            </td>
+                            <td>
+                                @item.Stil
+                            </td>
+                            <td>
+                                @item.Tehnika
+                            </td>
+                            <td>
+                                @item.Materijal
+                            </td>
+                            <td>
+                                @item.Dimenzije
+                            </td>
+                            <td>
+                                @item.BrDelova
+                            </td>
+                        </tr>
+                    }
+                    @foreach (PredmetBO item in ViewBag.SlobodniPredmeti)
+                    {
+                        <tr>
+                            <td>
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input" type="checkbox"
+                                           name="predmeti[]" id="@item.Id" value="@item.Id" />
+
+                                </div>
+                            </td>
+
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @zbirkaRepository.GetZbirkaById(item.ZbirkaId).Name;
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Autor
+                            </td>
+                            <td>
+                                @item.Mesto
+                            </td>
+                            <td>
+                                @item.Vreme
+                            </td>
+                            <td>
+                                @item.Stil
+                            </td>
+                            <td>
+                                @item.Tehnika
+                            </td>
+                            <td>
+                                @item.Materijal
+                            </td>
+                            <td>
+                                @item.Dimenzije
+                            </td>
+                            <td>
+                                @item.BrDelova
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

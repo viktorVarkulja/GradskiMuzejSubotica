@@ -1,0 +1,121 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.ViewModel.PredmetViewModel
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Zahtev Za Restauraciju";
+    Layout = "~/Views/Shared/_StrucnjakLayout.cshtml";
+    ZahtevRestauracijaRepository zahtevRepository = new();
+    ZahtevRestauracijaBO zahtev = zahtevRepository.GetZahtevByPredmet(Model.Id);
+}
+
+<h1>Zahtev za restauraciju</h1>
+
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZbirkaId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ZbirkaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Autor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Autor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mesto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mesto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vreme)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vreme)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tehnika)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tehnika)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Materijal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Materijal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dimenzije)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dimenzije)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrDelova)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrDelova)
+        </dd>
+        @if(zahtev != null)
+        {
+            <dt class = "col-sm-2">
+                Status zahteva
+            </dt>
+            <dd class = "col-sm-10">
+                @if(zahtev.StatusId == 2)
+                {
+                    <div class="badge bg-danger text-wrap">
+                    @zahtevRepository.GetZahtevStatusName(zahtev.StatusId)
+                    </div>
+                }else if(zahtev.StatusId == 4)
+                {
+                    <div class="badge bg-success text-wrap">
+                        @zahtevRepository.GetZahtevStatusName(zahtev.StatusId)
+                    </div>
+                }
+                
+            </dd>
+            <dt class="col-sm-2">
+                Komentar
+            </dt>
+            <dd class="col-sm-10">
+                @zahtev.Comment
+            </dd>
+        }
+
+        <dt class = "col-sm-2" hidden>
+            @Html.DisplayNameFor(model => model.SifKorisnik)
+        </dt>
+        <dd class = "col-sm-10" hidden>
+            @Html.DisplayFor(model => model.SifKorisnik)
+        </dd>
+    </dl>
+    
+    <form asp-action="ZahtevRestauracija">
+        <input type="text"  asp-for="SifKorisnik" hidden/>
+        <input type="submit" value="Šalji zahtev" class="btn btn-primary" /> |
+        <a asp-action="Strucnjak" asp-controller="Home">Nazad na početnu</a>
+    </form>
+</div>

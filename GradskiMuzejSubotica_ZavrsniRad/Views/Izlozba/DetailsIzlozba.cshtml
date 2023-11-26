@@ -1,0 +1,64 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.IzlozbaBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Podaci O Izložbi";
+    Layout = "_StrucnjakLayout";
+    IzlozbenoRepository izlozbenoRepository = new IzlozbenoRepository();
+    PredmetRepository predmetRepository = new PredmetRepository();
+    List<IzlozbenoBO> izlozbeno = (List<IzlozbenoBO>)izlozbenoRepository.GetIzlozbenosByIzloba(Model.ID); 
+}
+
+<h1>Podaci o izložbi</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrSale)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrSale)
+        </dd>
+        <dt class="col-sm-2">
+            Predmeti
+        </dt>
+        <dd class="col-sm-10">
+            <ul class="list-group list-group-flush">
+                @foreach(var i in izlozbeno)
+                {
+                    <li class="list-group-item">@predmetRepository.GetPredmetById(i.PredmetID).Id
+                        - @predmetRepository.GetPredmetById(i.PredmetID).Name</li>
+                }
+
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="Home" asp-action="Strucnjak">Nazad na početnu</a>
+</div>

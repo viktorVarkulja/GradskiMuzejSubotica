@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GradskiMuzejSubotica_ZavrsniRad.Models.RacunBO>
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+@{
+    ViewData["Title"] = "Lista Računa";
+    Layout = "~/Views/Shared/_RadnikLayout.cshtml";
+    KorisnikRepository korisnikRepository = new();
+}
+
+<h1>Lista računa</h1>
+
+<p>
+    <a asp-action="SetUsluga" asp-controller="Racun">Unesi novi račun</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UslugaId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vrednost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RadnikId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UslugaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                    @{
+                        string date = item.Date.ToString("dd/MM/yyyy");
+                    }
+                @Html.DisplayFor(modelItem => date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vrednost)
+            </td>
+            <td>
+                @{
+                        string nameKorisnik = item.RadnikId + " - " + korisnikRepository.GetKorisnikName(item.RadnikId);
+                }
+                @Html.DisplayFor(modelItem => nameKorisnik)
+            </td>
+            <td>
+                    @Html.ActionLink("Predgled računa", "DetailsRacun", new {  id=item.Id }) |
+                    @Html.ActionLink("Stoniranje računa", "DeleteRacun", new {  id=item.Id })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

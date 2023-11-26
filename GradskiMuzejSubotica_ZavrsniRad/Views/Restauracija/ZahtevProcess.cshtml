@@ -1,0 +1,98 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.PredmetBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Pregled Predmeta";
+    Layout = "~/Views/Shared/_RestauratorLayout.cshtml";
+    ZbirkaRepository zbirkaRepository = new();
+    var restaurator = ViewData["RestauratorId"];
+    var zahtevId = ViewData["Zahtev"];
+}
+
+<h1>Pregled predmeta</h1>
+
+<div>
+
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZbirkaId)
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                ZbirkaBO z = zbirkaRepository.GetZbirkaById(Model.ZbirkaId);
+            }
+            @Html.DisplayFor(model => z.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Autor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Autor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mesto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mesto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vreme)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vreme)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tehnika)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tehnika)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Materijal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Materijal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dimenzije)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dimenzije)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrDelova)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrDelova)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div class="btn btn-primary">
+        @Html.ActionLink("Prihvati zahtev", "CommentZahtev", new { id = zahtevId, type = 1, restaurator = restaurator },
+        new {@class="text-decoration-none text-light"})
+	</div>|
+    <div class="btn btn-danger">
+        @Html.ActionLink("Odbij zahtev", "CommentZahtev", new { id = zahtevId, type = 2 },
+        new {@class="text-decoration-none text-light"})
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.IzlozbaBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Brisanje Izložbe";
+    Layout = "_StrucnjakLayout";
+
+    PredmetRepository predmetRepository = new PredmetRepository();
+    IzlozbenoRepository izlozbenoRepository = new IzlozbenoRepository();
+    List<IzlozbenoBO> izlozbeno = (List<IzlozbenoBO>)izlozbenoRepository.GetIzlozbenosByIzloba(Model.ID);
+}
+
+<h1>Brisanje izložbe</h1>
+
+<h3>Sigurni ste da želite da izbrišete ovu izložbu?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrSale)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrSale)
+        </dd>
+        <dt class="col-sm-2">
+            Predmeti
+        </dt>
+        <dd class="col-sm-10">
+            <ul class="list-group list-group-flush">
+                @foreach (var i in izlozbeno)
+                {
+                    <li class="list-group-item">
+                        @predmetRepository.GetPredmetById(i.PredmetID).Id
+                        - @predmetRepository.GetPredmetById(i.PredmetID).Name
+                    </li>
+                }
+
+            </ul>
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteIzlozba">
+        <input type="submit" value="Briši" class="btn btn-danger" /> |
+        <a asp-action="Strucnjak" asp-controller="Home">Nazad na početnu</a>
+    </form>
+</div>

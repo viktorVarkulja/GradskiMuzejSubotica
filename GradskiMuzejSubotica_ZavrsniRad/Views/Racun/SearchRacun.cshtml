@@ -1,0 +1,84 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.ViewModel.SearchPredmetViewModel
+
+@{
+    ViewData["Title"] = "Pretraga Računa";
+    Layout = "~/Views/Shared/_RadnikLayout.cshtml";
+    var searchError = ViewData["SearchError"];
+}
+
+<h1>Pretraga računa</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchRacun">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SearchType" class="control-label"></label>
+                <select id="select" asp-for="SearchType" class="form-control" onchange="changeSearchType()">
+                    <option value="1">Šifra računa</option>
+                    <option value="2">Datum</option>
+                </select>
+                <span asp-validation-for="SearchType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SearchName" class="control-label">Šifra računa</label>
+                <input asp-for="SearchName" class="form-control" id="idSearch"/>
+                <span asp-validation-for="SearchName" class="text-danger"></span>
+                @{
+                    if (searchError != null)
+                    {
+                        <span asp-validation-for="SearchName" class="text-danger">@searchError</span>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">Datum računa</label>
+                <input asp-for="Date" class="form-control" id="dateSearch" readonly/>
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Korisnik" class="control-label"></label>
+                <input asp-for="Korisnik" class="form-control" />
+                <span asp-validation-for="Korisnik" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Pretraga" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    function changeSearchType() {
+        // Get the input elements by their IDs
+        const selectInput = document.getElementById("select");
+        const idInput = document.getElementById("idSearch");
+        const dateInput = document.getElementById("dateSearch")
+
+        // Parse the values as floats
+        const select = parseFloat(selectInput.value);
+
+        // Check if the values are valid numbers
+        if (!isNaN(select)) {
+            if (select == 1) 
+            { 
+                idInput.readOnly = false;
+                dateInput.value = "";
+                dateInput.readOnly = true;
+            }
+            else if (select==2)
+            {
+                dateInput.readOnly = false;
+                idInput.value = "";
+                idInput.readOnly = true
+            }
+        }
+    }
+</script>

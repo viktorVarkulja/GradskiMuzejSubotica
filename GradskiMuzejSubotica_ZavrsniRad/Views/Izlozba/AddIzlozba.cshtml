@@ -1,0 +1,199 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.IzlozbaBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Unos Izložbe";
+    var id = ViewData["SifIzlozba"];
+    Layout = "_StrucnjakLayout";
+    ZbirkaRepository zbirkaRepository = new ZbirkaRepository();
+    OdeljenjeRepository odeljenjeRepository = new OdeljenjeRepository();
+    var errorPredmet = ViewData["ErrorPredmet"];
+}
+
+<h1>Unesite podatke izložbe</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddIzlozba">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID" class="control-label"></label>
+                <input asp-for="ID" class="form-control" value="@id" readonly />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrSale" class="control-label"></label>
+                <input asp-for="BrSale" class="form-control" />
+                <span asp-validation-for="BrSale" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Unesi" class="btn btn-primary" />
+            </div>
+            <label class="control-label">Predmeti</label>
+            @if(errorPredmet!=null)
+            {
+                <br />
+                <span  class="text-danger">@errorPredmet</span>
+            }
+           
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Inventarski broj
+                        </th>
+                        <th>
+                            Šifra zbirke
+                        </th>
+                        <th>
+                            Naziv
+                        </th>
+                        <th>
+                            Autor
+                        </th>
+                        <th>
+                            Mesto
+                        </th>
+                        <th>
+                            Vreme
+                        </th>
+                        <th>
+                            Stil
+                        </th>
+                        <th>
+                            Tehnika
+                        </th>
+                        <th>
+                            Materijal
+                        </th>
+                        <th>
+                            Dimenzije
+                        </th>
+                        <th>
+                            Broj delova
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Predmeti)
+                    {
+                        <tr>
+                            <td>
+
+                                <div class="form-check">
+
+                                    <input class="form-check-input" type="checkbox"
+                                           name="predmeti[]" id="@item.Id" value="@item.Id" />
+
+                                </div>
+                            </td>
+
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @zbirkaRepository.GetZbirkaById(item.ZbirkaId).Name;
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Autor
+                            </td>
+                            <td>
+                                @item.Mesto
+                            </td>
+                            <td>
+                                @item.Vreme
+                            </td>
+                            <td>
+                                @item.Stil
+                            </td>
+                            <td>
+                                @item.Tehnika
+                            </td>
+                            <td>
+                                @item.Materijal
+                            </td>
+                            <td>
+                                @item.Dimenzije
+                            </td>
+                            <td>
+                                @item.BrDelova
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            
+            <br/>
+            
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+@* <script type="text/javascript">
+    
+    function OnSelectedOdeljenje(odeljenje) {
+
+        var idOdelj = odeljenje;
+        if (idOdelj === "") {
+            idOdelj = 0;
+        }
+        $.ajax({
+            url: '@Url.Action("GetPredmetByOdeljenje", "Izlozba")',
+            data: { id: idOdelj},
+            success: function (result) {
+                $('#Predmeti').html(result);
+            }
+        });
+
+    }
+
+</script>
+
+<div>
+
+    @Html.DropDownList(
+    "Odeljenji",
+    new SelectList(odeljenjeRepository.GetAllOdelj(), "Id", "Name"),
+    "Selektuj odeljenje",
+    new
+    {
+    @class = "form-control",
+    @onchange = "OnSelectedOdeljenje(this.value)"
+    })
+</div>
+<div id="Predmeti">
+
+    @{
+        Html.ActionLink("GetIspiteByPredmet", "PrijavaIspita", new { id = 0 });
+    }
+
+</div>
+ *@

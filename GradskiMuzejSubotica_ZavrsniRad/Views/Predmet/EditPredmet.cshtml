@@ -1,0 +1,83 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.PredmetBO
+
+@{
+    ViewData["Title"] = "Izmena Podataka Predmeta";
+    Layout = "_StrucnjakLayout";
+}
+
+<h1>Izmena podataka predmeta</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPredmet">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly/>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ZbirkaId" class="control-label"></label>
+                <input asp-for="ZbirkaId" class="form-control" />
+                <span asp-validation-for="ZbirkaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Autor" class="control-label"></label>
+                <input asp-for="Autor" class="form-control" />
+                <span asp-validation-for="Autor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mesto" class="control-label"></label>
+                <input asp-for="Mesto" class="form-control" />
+                <span asp-validation-for="Mesto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vreme" class="control-label"></label>
+                <input asp-for="Vreme" class="form-control" />
+                <span asp-validation-for="Vreme" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Stil" class="control-label"></label>
+                <input asp-for="Stil" class="form-control" />
+                <span asp-validation-for="Stil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tehnika" class="control-label"></label>
+                <input asp-for="Tehnika" class="form-control" />
+                <span asp-validation-for="Tehnika" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Materijal" class="control-label"></label>
+                <input asp-for="Materijal" class="form-control" />
+                <span asp-validation-for="Materijal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dimenzije" class="control-label"></label>
+                <input asp-for="Dimenzije" class="form-control" />
+                <span asp-validation-for="Dimenzije" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrDelova" class="control-label"></label>
+                <input asp-for="BrDelova" class="form-control" />
+                <span asp-validation-for="BrDelova" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Snimi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Predmet" asp-action="SearchPredmet" asp-route-choose="1">Vratite se na pretragu</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

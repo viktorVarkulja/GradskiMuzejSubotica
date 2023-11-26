@@ -1,0 +1,96 @@
+﻿@model IEnumerable<GradskiMuzejSubotica_ZavrsniRad.Models.RestauracijaBO>
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+@{
+    ViewData["Title"] = "Lista Resturacije";
+    Layout = "~/Views/Shared/_RestauratorLayout.cshtml";
+    ZahtevRestauracijaRepository zahtevRestauracija = new();
+    PredmetRepository predmetRepository = new();
+    KorisnikRepository korisnikRepository = new();
+}
+
+<h1>Lista resturacije</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZahtevId)
+            </th>
+            <th>Predmet</th>
+            <th>
+               @Html.DisplayNameFor(model => model.RestauratorId)
+            </th>
+            <th>Status restauracije</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZahtevId)
+            </td>
+                @{
+                    ZahtevRestauracijaBO zahtev = zahtevRestauracija.GetZahtevById(item.ZahtevId);
+                    PredmetBO predmet = predmetRepository.GetPredmetById(zahtev.PredmetId);
+                }
+
+                <td>
+                    @predmet.Id - @predmet.Name
+                </td>
+            <td>
+                    @{
+                        string name = item.RestauratorId +" - "+ korisnikRepository.GetKorisnikName(item.RestauratorId);
+                    }
+                @Html.DisplayFor(modelItem => name)
+            </td>
+                @{
+                    int statusID = zahtevRestauracija.GetZahtevById(item.ZahtevId).StatusId;
+                    string opisStatus = zahtevRestauracija.GetZahtevStatusName(zahtev.StatusId);
+                    switch (statusID)
+                    {
+                    case 3:
+                    <td >
+                                <div class="badge bg-info text-wrap">
+                                    @opisStatus
+                                </div>
+                    </td>
+                    break;
+                    case 4:
+                    <td>
+                                <div class="badge bg-success text-wrap">
+                                    @opisStatus
+                                </div>
+                    </td>
+                    break;
+                    default:
+                    <td>
+                        <div class="badge bg-black text-wrap">
+                            @opisStatus
+                        </div>
+                        
+                    </td>
+                    break;
+                    }
+                }
+                @if (statusID == 3)
+                {
+                    <td>
+                        @Html.ActionLink("Restauracija završena", "CommentZahtev", new {  id=item.ZahtevId, type = 3 })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                    </td>
+                }
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Mvc;
+@{
+	ViewData["Title"] = "Stručnjak";
+	Layout = "_StrucnjakLayout";
+	string success = (String)TempData["Success"];
+	var error = TempData["Error"];
+	var korisnikId = ViewData["KorisnikId"];
+}
+<div class="d-flex justify-content-center">
+	<h1>
+		Stručnjak
+	</h1>
+</div>
+@{
+	if(success!=null)
+	{
+	<div class="row">
+	<div class="alert alert-success" role="alert">
+		@success
+	</div>
+	</div>
+	}
+	if (error != null)
+	{
+		<div class="row">
+			<div class="alert alert-danger" role="alert">
+				@error
+			</div>
+		</div>
+	}
+}
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+				Predmeti
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Predmet" asp-action="SearchForListPredmet">Pretraga predmeta</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Predmet" asp-action="SetPredmetId">Unos predmeta</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Predmet" asp-action="SearchPredmet" asp-route-choose="1">Izmena podataka predmeta</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Predmet" asp-action="SearchPredmet" asp-route-choose="2">Brisanje predmeta</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Predmet" asp-action="SearchPredmet" 
+					asp-route-korisnik="@korisnikId" asp-route-choose="3">Zahtev za restauraciju</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+				Izložbe
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Izlozba" asp-action="SearchForListIzlozba">Pretraga izložba</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Izlozba" asp-action="SetIdIzlozba">Unos izložbe</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Izlozba" asp-action="SearchIzlozba" asp-route-choose="1">Izmena podataka izložbe</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area="" asp-controller="Izlozba" asp-action="SearchIzlozba" asp-route-choose="2">Brisanje izložbe</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+

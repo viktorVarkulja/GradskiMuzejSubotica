@@ -1,0 +1,43 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.ViewModel.UslugaViewModel
+
+@{
+    ViewData["Title"] = "Unos Računa";
+    Layout = "~/Views/Shared/_RadnikLayout.cshtml";
+    var uslugaError = ViewData["UslugaError"];
+}
+
+<h1>Unos računa</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SetUsluga">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Usluga" class="control-label"></label>
+                <select asp-for="Usluga" class="form-control" asp-items="@(new SelectList(ViewBag.Usluge,"Id", "Name"))">
+                    <option value="-1">---Izaberite uslugu---</option>
+                </select>
+                <span asp-validation-for="Usluga" class="text-danger"></span>
+                @if (uslugaError != null)
+                {
+                    <span asp-validation-for="Usluga" class="text-danger">
+                        @uslugaError
+                    </span>
+                }
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="RadnikId" class="control-label"></label>
+                <input asp-for="RadnikId" class="form-control" />
+                <span asp-validation-for="RadnikId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Biraj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

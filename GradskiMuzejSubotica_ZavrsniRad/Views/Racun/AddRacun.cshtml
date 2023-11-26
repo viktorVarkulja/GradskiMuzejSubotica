@@ -1,0 +1,90 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.RacunBO
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Unos Računa";
+    Layout = "~/Views/Shared/_RadnikLayout.cshtml";
+    KorisnikRepository korisnikRepository = new();
+    string nameKorisnik = Model.RadnikId + " - " + korisnikRepository.GetKorisnikName(Model.RadnikId);
+    var price = ViewData["UslugaPrice"];
+}
+
+<h1>Unos računa</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddRacun">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UslugaId" class="control-label"></label>
+                <input asp-for="UslugaId" class="form-control" readonly/>
+                <span asp-validation-for="UslugaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" id="amount" onchange="changeTotalPrice()" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Time" class="control-label"></label>
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vrednost" class="control-label"></label>
+                <input asp-for="Vrednost" id="totalPrice" class="form-control" value="" readonly/>
+                <span asp-validation-for="Vrednost" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="RadnikId" class="control-label"></label>
+                <input type="text" class="form-control" value="@nameKorisnik" />
+                <input asp-for="RadnikId" class="form-control" readonly hidden/>
+                <span asp-validation-for="RadnikId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Štampaj" class="btn btn-primary" />
+            </div>
+            <input type="text" id="price" value="@price" readonly hidden/>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script>
+    function changeTotalPrice() {
+        const amountInput = document.getElementById("amount");
+        const priceInput = document.getElementById("price");
+        const totalInput = document.getElementById("totalPrice")
+
+        const amount = parseFloat(amountInput.value);
+        const price = parseFloat(priceInput.value);
+
+        if (!isNaN(amount) && !isNaN(price) && amount >= 0) {
+            const totalPrice = amount * price;
+
+            totalInput.value = totalPrice.toFixed(2); 
+        }
+        else
+        {
+            const totalPrice = 0.00;
+            totalInput.value = totalPrice.toFixed(2);
+        }
+    }
+
+    //const amountInput = document.getElementById("amount");
+    //amountInput.addEventListener("change", updateTotalPrice);
+</script>

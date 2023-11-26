@@ -1,0 +1,35 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.ViewModel.SetIzlozbaIdViewModel
+
+@{
+    ViewData["Title"] = "Unos Izložba";
+    var idError = ViewData["IdError"];
+    Layout = "_StrucnjakLayout";
+}
+
+<h1>Unesite šifru izložbe</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SetIdIzlozba">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+                @if(idError != null)
+                {
+                    <span asp-validation-for="Id" class="text-danger">@idError</span>
+                }
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Unesi" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

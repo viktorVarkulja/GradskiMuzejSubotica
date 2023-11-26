@@ -1,0 +1,86 @@
+﻿@model GradskiMuzejSubotica_ZavrsniRad.Models.PredmetBO
+
+@{
+    ViewData["Title"] = "Brisanje Predmeta";
+    Layout = "_StrucnjakLayout";
+}
+
+<h1>Brisanje predmeta</h1>
+
+<h3>Sigurni ste da želite da izbrišete ovaj predmet?</h3>
+<hr />
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ZbirkaId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ZbirkaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Autor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Autor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mesto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mesto)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vreme)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vreme)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stil)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stil)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tehnika)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tehnika)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Materijal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Materijal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dimenzije)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dimenzije)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BrDelova)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BrDelova)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeletePredmet">
+        <input type="submit" value="Briši" class="btn btn-danger" /> |
+        <a asp-controller="Predmet" asp-action="SearchPredmet" asp-route-choose="2">Vratite se na pretragu</a>
+    </form>
+</div>

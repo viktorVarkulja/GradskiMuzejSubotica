@@ -1,0 +1,102 @@
+﻿@model IEnumerable<GradskiMuzejSubotica_ZavrsniRad.Models.ZahtevRestauracijaBO>
+@using GradskiMuzejSubotica_ZavrsniRad.Models.EFRepository
+
+@{
+    ViewData["Title"] = "Lista Zahteva";
+    Layout = "~/Views/Shared/_RestauratorLayout.cshtml";
+    ZahtevRestauracijaRepository zahtevRepository = new();
+    PredmetRepository predmetRepository = new();
+    KorisnikRepository korisnikRepository = new();
+    var restaurator = ViewData["Restaurator"];
+}
+
+<h1>Lista zahteva</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PredmetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SrucnjakId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                    @{
+                        PredmetBO predmet = predmetRepository.GetPredmetById(item.PredmetId);
+                        var premdetDisp = item.PredmetId + " - " + predmet.Name;
+                    }
+                @Html.DisplayFor(modelItem => premdetDisp)
+            </td>
+            <td>
+                    @{
+                        int idKorisnik = korisnikRepository.GetKorisnikbyStrucnjak(item.SrucnjakId);
+                        string name = item.SrucnjakId + " - " + korisnikRepository.GetKorisnikName(idKorisnik); 
+                    }    
+                    @Html.DisplayFor(modelItem => name)
+            </td>
+                @{
+                    string statusOpis = zahtevRepository.GetZahtevStatusName(item.StatusId);
+                    switch (item.StatusId)
+                    {
+                        case 1:
+                            <td>
+                                <div class="badge bg-secondary text-wrap">
+                                    @Html.DisplayFor(modelItem => statusOpis)
+                                </div>
+                            </td>
+                            break;
+                        case 2:
+                            <td>
+                                <div class="badge bg-danger text-wrap">
+                                    @Html.DisplayFor(modelItem => statusOpis)
+                                </div>
+                            </td>
+                            break;
+                        default:
+                            <td>
+                                <div class="badge bg-black text-wrap">
+                                    @Html.DisplayFor(modelItem => statusOpis)
+                                </div>
+                            </td>
+                            break;
+                    }
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            @if(item.StatusId == 1)
+                {
+                    <td>
+                    @Html.ActionLink("Pregled predmeta", "ZahtevProcess", new {  id=item.Id , restaurator = restaurator  })
+                    </td>
+                }
+                else
+                {
+                    <td>
+
+                    </td>
+                }
+                
+        </tr>
+}
+    </tbody>
+</table>

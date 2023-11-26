@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Mvc;
+@{
+	ViewData["Title"] = "Restaurator";
+	Layout = "_RestauratorLayout";
+	string success = (String)TempData["Success"];
+	var error = TempData["Error"];
+	var korisnikId = ViewData["KorisnikId"];
+}
+<div class="d-flex justify-content-center">
+	<h1>
+		Restaurator
+	</h1>
+</div>
+@{
+	if (success != null)
+	{
+		<div class="row">
+			<div class="alert alert-success" role="alert">
+				@success
+			</div>
+		</div>
+	}
+	if (error != null)
+	{
+		<div class="row">
+			<div class="alert alert-danger" role="alert">
+				@error
+			</div>
+		</div>
+	}
+}
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header">
+				Predmeti
+			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area=""
+					   asp-controller="Restauracija" asp-action="ListZahtev" asp-route-korisnik="@korisnikId">Pregled zahteva</a>
+				</li>
+				<li class="list-group-item">
+					<a class="dropdown-item" asp-area=""
+					   asp-controller="Restauracija" asp-action="ListResturacija">Restauracija predmeta</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
